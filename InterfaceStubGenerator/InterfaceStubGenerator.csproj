@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Diagnostics.cs" />
     <Compile Include="InterfaceStubGenerator.cs" />
-    <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
