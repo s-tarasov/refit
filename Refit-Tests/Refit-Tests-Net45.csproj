@@ -64,6 +64,10 @@
       <Project>{5694F8AD-7A15-4717-B649-1749A311300B}</Project>
       <Name>InterfaceStubGenerator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Refit\Refit.csproj">
+      <Project>{e156e10b-0a06-49c0-b567-a663a5199dc0}</Project>
+      <Name>Refit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
