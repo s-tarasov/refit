@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
+  <PropertyGroup>
+    <TargetFrameworks>net45;net46</TargetFrameworks>
+    <AssemblyName>Refit.Tests</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+    <EmbeddedResource Include="compiler\resources\**\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InterfaceStubGenerator\InterfaceStubGenerator.csproj">
+      <Project>{5694F8AD-7A15-4717-B649-1749A311300B}</Project>
+      <Name>InterfaceStubGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Refit\Refit.csproj">
+      <Project>{e156e10b-0a06-49c0-b567-a663a5199dc0}</Project>
+      <Name>Refit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="Test Files\Test.pdf" />
+  </ItemGroup>
+  <Target Name="GenerateRefitStubs" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <RefitParameterFile>$(IntermediateOutputPath)\RefitParams.rsp</RefitParameterFile>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(RefitParameterFile)" Lines="@(Compile)" Overwrite="true" />
+    <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+      <RefitExecCmd>$(SolutionDir)InterfaceStubGenerator\bin\$(ConfigurationName)\InterfaceStubGenerator.exe "$(ProjectDir)RefitStubs.cs" "$(MSBuildProjectDirectory)" "$(RefitParameterFile)"</RefitExecCmd>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+      <RefitExecCmd>mono $(SolutionDir)InterfaceStubGenerator/bin/$(Configuration)/InterfaceStubGenerator.exe "$(ProjectDir)RefitStubs.cs" "$(MSBuildProjectDirectory)" "$(RefitParameterFile)"</RefitExecCmd>
+    </PropertyGroup>
+    <Exec Command="$(RefitExecCmd)" />
+    <Message Text="Processed Refit Stubs" />
+  </Target>
+</Project>
