@@ -9,7 +9,7 @@
   -->
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
   <PropertyGroup>
-    <TargetFrameworks>net45;net46</TargetFrameworks>
+    <TargetFramework>net45</TargetFramework>
     <AssemblyName>Refit.Tests</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
