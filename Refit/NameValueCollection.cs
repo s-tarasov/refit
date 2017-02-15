@@ -14,5 +14,10 @@ namespace System.Collections.Specialized
         {
             return Count > 0; 
         }
+
+        public String[] GetValues(String name)
+        {
+            return new[] { this[name] };
+        }
     }
 }

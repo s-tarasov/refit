@@ -856,6 +856,32 @@ namespace Refit.Tests
         }
 
         [Fact]
+        public async Task CustomParmeterFormatterCommaSeparatedArray()
+        {
+            var settings = new RefitSettings { UrlParameterFormatter = new TestUrlParameterFormatter("?value=1,2,3&bcd=5") };
+            var fixture = new RequestBuilderImplementation(typeof(IDummyHttpApi), settings);
+
+            var factory = fixture.BuildRequestFactoryForMethod("FetchSomeStuff");
+            var output = factory(new object[] { 5 });
+
+            var uri = new Uri(new Uri("http://api"), output.RequestUri);
+            Assert.Equal("/foo/bar/?value=1%2c2%2c3&bcd=5", uri.PathAndQuery);
+        }
+
+        [Fact]
+        public async Task CustomParmeterFormatterSimpleArray()
+        {
+            var settings = new RefitSettings { UrlParameterFormatter = new TestUrlParameterFormatter("?value=1&value=2&value=3&bcd=5") };
+            var fixture = new RequestBuilderImplementation(typeof(IDummyHttpApi), settings);
+
+            var factory = fixture.BuildRequestFactoryForMethod("FetchSomeStuff");
+            var output = factory(new object[] { 5 });
+
+            var uri = new Uri(new Uri("http://api"), output.RequestUri);
+            Assert.Equal("/foo/bar/?value=1&value=2&value=3&bcd=5", uri.PathAndQuery);
+        }
+
+        [Fact]
         public void ICanPostAValueTypeIfIWantYoureNotTheBossOfMe()
         {
             var fixture = new RequestBuilderImplementation(typeof(IDummyHttpApi));

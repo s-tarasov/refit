@@ -208,7 +208,9 @@ namespace Refit
                 }
 
                 if (query.HasKeys()) {
-                    var pairs = query.Keys.Cast<string>().Select(x => HttpUtility.UrlEncode(x) + "=" + HttpUtility.UrlEncode(query[x]));
+                    var pairs = query.Keys.Cast<string>()
+                        .SelectMany(key => query.GetValues(key).Select(value => new { key, value }))
+                        .Select(p => HttpUtility.UrlEncode(p.key) + "=" + HttpUtility.UrlEncode(p.value));
                     uri.Query = String.Join("&", pairs);
                 } else {
                     uri.Query = null;
